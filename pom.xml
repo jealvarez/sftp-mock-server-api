@@ -141,7 +141,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.2.2</version>
                 <configuration>
-                    <imageName>sftp-mock-server</imageName>
+                    <imageName>sftp-mock-server-api</imageName>
                     <dockerDirectory>docker</dockerDirectory>
                     <resources>
                         <resource>

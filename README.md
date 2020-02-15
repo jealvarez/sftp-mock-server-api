@@ -19,7 +19,7 @@ mvn clean package docker:build
 2. Run the container
 
 ```sh
-docker run --rm --name sftp-mock-server -p 0.0.0.0:2222:2222 -p 0.0.0.0:2221:2221 -d sftp-mock-server:latest ; docker logs -f sftp-mock-server 
+docker run --rm --name sftp-mock-server-api -p 0.0.0.0:2222:2222 -p 0.0.0.0:2221:2221 -d sftp-mock-server-api:latest ; docker logs -f sftp-mock-server-api 
 ```
 
 ## Documentation
