@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Default logback setup: console output -->
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MMM-dd HH:mm:ss.SSS'Z',GMT} level=%p thread=%thread pid=${PID:- } code_location=%-40.40logger{39} %replace(%mdc){', ', ' '} %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!-- Suppress the warning about memory leaks when reloading the classloader -->
+    <logger name="uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J" level="ERROR"/>
+
+    <!-- Suppress the warning about no dispatcher servlet mappings since we address it in the ExceptionHandlerAdvice -->
+    <logger name="org.springframework.web.servlet.PageNotFound" level="ERROR"/>
+
+</configuration>

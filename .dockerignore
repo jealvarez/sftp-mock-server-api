@@ -1,0 +1,24 @@
+.git/
+.idea/
+.repository/
+
+src/
+target/
+tmp/
+
+# sonar:sonar temporary folders
+_tmp/
+cache/
+
+# misc
+.docker-flow
+.gitignore
+Jenkins*
+*.xml
+*.yml
+
+auto-pom-version.jar
+
+!target/sftp-mock-server.jar
+sftp-mock-server.iml
+sftp-mock-server-test.log
