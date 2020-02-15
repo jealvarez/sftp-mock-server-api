@@ -10,10 +10,10 @@
     </parent>
 
 	<groupId>org.jealvarez</groupId>
-    <artifactId>sftp-mock-server</artifactId>
+    <artifactId>sftp-mock-server-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>sftp-mock-server</name>
+    <name>sftp-mock-server-api</name>
 
     <properties>
         <java.version>11</java.version>
