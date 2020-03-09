@@ -12,7 +12,6 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Sftp {
 
-    private final String rootDirectory;
     private final String hostname;
     private final List<String> pathsToCreate;
 

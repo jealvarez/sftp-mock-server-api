@@ -38,8 +38,7 @@ joalvarez.local
 2. Starts the sftp server
 
 ```sh
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: */*' -d '{ 
-   "root_directory": "/", 
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: */*' -d '{  
    "hostname": "${HOSTNAME}", 
    "paths_to_create": [ 
      "/test/inbound", 

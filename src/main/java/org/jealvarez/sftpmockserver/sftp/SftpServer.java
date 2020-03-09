@@ -1,5 +1,6 @@
 package org.jealvarez.sftpmockserver.sftp;
 
+import org.apache.sshd.common.compression.BuiltinCompressions;
 import org.apache.sshd.common.file.virtualfs.VirtualFileSystemFactory;
 import org.apache.sshd.server.SshServer;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static java.util.Collections.singletonList;
 
@@ -35,6 +37,7 @@ public class SftpServer {
         sshServer.setKeyPairProvider(new SimpleGeneratorHostKeyProvider(publicKey));
         sshServer.setFileSystemFactory(new VirtualFileSystemFactory(sftpRemoteDirectoryPath.toAbsolutePath()));
         sshServer.setSubsystemFactories(singletonList(new SftpSubsystemFactory()));
+        sshServer.setCompressionFactories(List.of(BuiltinCompressions.zlib, BuiltinCompressions.delayedZlib, BuiltinCompressions.none));
 
         sshServer.stop();
         sshServer.start();

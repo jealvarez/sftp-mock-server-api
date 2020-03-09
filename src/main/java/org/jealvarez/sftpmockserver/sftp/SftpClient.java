@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import static com.jcraft.jsch.ChannelSftp.SSH_FX_NO_SUCH_FILE;
 
@@ -44,6 +44,8 @@ public class SftpClient {
         final Properties properties = new Properties();
         properties.put("StrictHostKeyChecking", "no");
         properties.put("PreferredAuthentications", "publickey,keyboard-interactive,password");
+        properties.put("compression.s2c", "zlib@openssh.com,zlib,none");
+        properties.put("compression.c2s", "zlib@openssh.com,zlib,none");
 
         session = jsch.getSession(username, server, port);
         session.setConfig(properties);
@@ -73,15 +75,15 @@ public class SftpClient {
     }
 
     public boolean existsFile(final String path) {
-        Vector vector = null;
+        List<String> files = null;
         try {
-            vector = sftpChannel.ls(path);
+            files = sftpChannel.ls(path);
         } catch (final SftpException sftpException) {
             if (sftpException.id == SSH_FX_NO_SUCH_FILE) {
                 return false;
             }
         }
-        return vector != null && !vector.isEmpty();
+        return files != null && !files.isEmpty();
     }
 
     @SuppressWarnings("unchecked")
@@ -90,7 +92,7 @@ public class SftpClient {
             throw new Exception("Connection to server is closed. Open it first.");
         }
 
-        final Vector<ChannelSftp.LsEntry> entries = sftpChannel.ls(remoteDirectoryPath);
+        final List<ChannelSftp.LsEntry> entries = sftpChannel.ls(remoteDirectoryPath);
         for (final ChannelSftp.LsEntry entry : entries) {
             if (!(entry.getFilename().equals(".") || entry.getFilename().equals(".."))) {
                 if (entry.getAttrs().isDir()) {
@@ -102,17 +104,13 @@ public class SftpClient {
         }
     }
 
-    public void disconnect() {
-        if (sftpChannel != null) {
-            sftpChannel.disconnect();
-        }
-
-        if (channel != null) {
-            channel.disconnect();
-        }
-
-        if (session != null) {
-            session.disconnect();
+    public void getRemoteDirectories(final String path, final List<String> directories) throws SftpException {
+        final List<ChannelSftp.LsEntry> entries = sftpChannel.ls(path);
+        for (final ChannelSftp.LsEntry entry : entries) {
+            if (!entry.getFilename().equals(".") && !entry.getFilename().equals("..")) {
+                directories.add(path + "/" + entry.getFilename());
+                getRemoteDirectories(path + "/" + entry.getFilename(), directories);
+            }
         }
     }
 
@@ -129,10 +127,24 @@ public class SftpClient {
                 try {
                     sftpChannel.mkdir(pathToCreate);
                 } catch (final SftpException sftpExceptionMkdir) {
-                    LOGGER.error("Unable to create directories={}", pathToCreate , sftpExceptionMkdir);
+                    LOGGER.error("Unable to create directories={}", pathToCreate, sftpExceptionMkdir);
                 }
             }
         });
+    }
+
+    public void disconnect() {
+        if (sftpChannel != null) {
+            sftpChannel.disconnect();
+        }
+
+        if (channel != null) {
+            channel.disconnect();
+        }
+
+        if (session != null) {
+            session.disconnect();
+        }
     }
 
 }
