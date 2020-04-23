@@ -9,7 +9,7 @@
         <version>2.2.4.RELEASE</version>
     </parent>
 
-	<groupId>org.jealvarez</groupId>
+    <groupId>org.jealvarez</groupId>
     <artifactId>sftp-mock-server-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
